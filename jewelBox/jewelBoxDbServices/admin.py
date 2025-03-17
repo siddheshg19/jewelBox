@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import Jewellery, CustomUser
 
 # Register your models here.
-admin.site.register(Jewellery)
+from .models import CustomUser, Jewelry, Order
+
 admin.site.register(CustomUser)
+admin.site.register(Jewelry)
+admin.site.register(Order)
