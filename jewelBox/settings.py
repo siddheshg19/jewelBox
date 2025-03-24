@@ -56,7 +56,7 @@ ROOT_URLCONF = 'jewelBox.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'frontEnd/template')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -81,6 +81,19 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#     'ENGINE': 'django.db.backends.postgresql',  # MySQL database engine                                  
+#         'NAME': 'postgres',          # Database name you created in RDS
+#         'USER': 'postgres',      # Master username for RDS
+#         'PASSWORD': 'postgres',  # Master password for RDS
+#         'HOST': 'drive-ease.cf4e1bbgxi8c.us-east-1.rds.amazonaws.com',           # RDS endpoint (e.g., tradehub-db.xxxxxx.us-east-1.rds.amazonaws.com)
+#         'PORT': '5432',                        # Default MySQL port
+#         'OPTIONS': {
+#             'options': '-c timezone=UTC',  # Force UTC timezone
+#         },
+# }}
 
 
 # Password validation
@@ -117,7 +130,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'frontEnd/media/')
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontEnd/static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
