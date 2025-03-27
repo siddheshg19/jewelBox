@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Orders</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="card mb-4 p-3">
+            <div class="row g-0 align-items-center">
+                <!-- Order Details (Left) -->
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h4 class="card-title">Order #{{ order.id }}</h4>
+                        <p><strong>Order Date:</strong> {{ order.created_at }}</p>
+                        <p><strong>Total Price:</strong> €{{ order.total_price }}</p>
+                        <p><strong>Status:</strong> {{ order.status }}</p>
+
+                        <h5>Items:</h5>
+                        <ul>
+                            {% for item in order.orderitem_set.all %}
+                                <li>
+                                    <strong>{{ item.jewelry.name }}</strong> - €{{ item.jewelry.price }} x {{ item.quantity }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {% if order.status != "Cancelled" %}
+                            <form method="post" action="{% url 'cancel_order' order.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Cancel Order</button>
+                            </form>
+                        {% else %}
+                            <p class="text-danger"><strong>Order Cancelled</strong></p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Order Image (Right) -->
+                <div class="col-md-4 text-center">
+                    {% for item in order.orderitem_set.all %}
+                        {% if item.jewelry.image %}
+                            <img src="{{ item.jewelry.image.url }}" class="img-fluid rounded mb-2" alt="{{ item.jewelry.name }}" style="max-width: 100%; height: auto;">
+                        {% else %}
+                            <p>No Image Available</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center">You have no orders yet.</p>
+    {% endif %}
+
+    <div class="text-center mt-3">
+        <a href="{% url 'shop' %}" class="btn btn-primary">Browse Jewelry</a>
+    </div>
+</div>
+{% endblock %}

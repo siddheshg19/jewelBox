@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} Order Jewelry {% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white text-center">
+            <h2>Order Jewelry</h2>
+        </div>
+        <div class="card-body">
+            <h5>Jewelry: <strong>{{ jewelry.name }}</strong></h5>
+            <p><strong>Price per item:</strong> €{{ jewelry.price }}</p>
+            <p><strong>Available Stock:</strong> {{ jewelry.stock }}</p>
+
+            {% if jewelry.stock > 0 %}
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" name="quantity" id="quantity" class="form-control" min="1" max="{{ jewelry.stock }}" required>
+                </div>
+                <button type="submit" class="btn btn-success">Place Order</button>
+            </form>
+            {% else %}
+            <p class="text-danger">This item is currently out of stock.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'jewelry_list' %}" class="btn btn-secondary">Back to Jewelry List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %} Order Confirmation {% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-success text-white text-center">
+            <h2>Order Confirmed</h2>
+        </div>
+        <div class="card-body">
+            <h5>Thank you, {{ order.user.username }}!</h5>
+            <p>Your order for <strong>{{ order.jewelry.name }}</strong> has been confirmed.</p>
+            <p><strong>Order ID:</strong> {{ order.id }}</p>
+            <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+            <p><strong>Total Price:</strong> €{{ order.total_price }}</p>
+            <p><strong>Status:</strong> {{ order.status }}</p>
+        </div>
+        <div class="card-footer text-center">
+            <p>An email confirmation has been sent to <strong>{{ order.user.email }}</strong>.</p>
+            <a href="{% url 'jewelry_list' %}" class="btn btn-primary">Back to Jewelry List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

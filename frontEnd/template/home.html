@@ -12,7 +12,7 @@
             <h1>Welcome to Jewel Box</h1>
             <p>Discover timeless elegance and exquisite craftsmanship in our exclusive jewelry collection</p>
             {% if user.is_authenticated %}
-              <a href="{% url 'car_list' %}" class="btn" style="background-color: #b76e79; color :white">Explore Now</a>
+              <a href="{% url 'jewelry_list' %}" class="btn" style="background-color: #b76e79; color :white">Explore Now</a>
             {% else %}
                 <a href="{% url 'login' %}" class="btn" style="background-color: #b76e79; color :white">Explore Now</a>
             {% endif %}
