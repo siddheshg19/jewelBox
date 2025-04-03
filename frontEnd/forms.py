@@ -15,7 +15,7 @@ class SignupForm(forms.ModelForm):
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control','maxlength': '10', 'pattern': '^\d{10}$', 'title': 'Phone number must be exactly 10 digits'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '10', 'pattern': '^\d{10}$', 'title': 'Phone number must be exactly 10 digits'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
@@ -29,13 +29,11 @@ class SignupForm(forms.ModelForm):
         return email
 
     def clean_phone_number(self):
-        phone = self.cleaned_data.get('[phone_number]')
-        try:
-            if not phone.isdigit() or len(phone) != 10:
+        phone_number = self.cleaned_data.get('phone_number')  # Corrected the field name
+        if phone_number:  # Check if phone_number is not None or empty
+            if not phone_number.isdigit() or len(phone_number) != 10:
                 raise forms.ValidationError("Phone number must be exactly 10 digits.")
-        except Exception as e:
-            raise forms.ValidationError(f"An error occurred while validating the phone number: {e}")
-        return phone
+        return phone_number  # Return the cleaned phone number, even if it's empty
 
     def save(self, commit=True):
         try:

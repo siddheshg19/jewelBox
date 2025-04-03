@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import logout as auth_logout
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.db import transaction
 
 # Create your views here.
 def home(request):
@@ -119,6 +120,36 @@ def order_jewelry(request, jewelry_id):
 def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     return render(request, 'order_confirmation.html', {'order': order})
+
+
+@login_required
+def my_orders(request):
+    """Displays the logged-in user's order history."""
+
+    user = request.user  # Get the logged-in user directly using request.user
+
+    orders = Order.objects.filter(user=user).order_by('-order_date') #Filter orders by user, ordered by date descending
+
+    return render(request, 'my_orders.html', {'orders': orders})
+
+@login_required
+def cancel_order(request, order_id):
+    """Handles the cancellation of an order (by DELETING it) and adds back the stock."""
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    if order.status == 'Pending':
+        with transaction.atomic():  # Use a transaction to ensure atomicity
+            jewelry = order.jewelry
+            jewelry.stock += order.quantity  # Add the quantity back to the jewelry's stock
+            jewelry.save()  # Save the updated jewelry
+
+            order.delete()  # Delete the order
+        messages.success(request, f"Order #{order.id} has been deleted, and stock has been updated.")
+
+    else:
+        messages.error(request, "You can only delete orders that are in 'Pending' status.")
+
+    return redirect('my_orders')
 
 
 

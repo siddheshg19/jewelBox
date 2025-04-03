@@ -1,9 +1,17 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import RegexValidator, MinLengthValidator
 
 class CustomUser(AbstractUser):
     is_owner = models.BooleanField(default=False)
-    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    #phone_number = models.CharField(max_length=15, blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=10,
+        validators=[
+            MinLengthValidator(10, message="Phone number must be exactly 10 digits."),
+            RegexValidator(r'^\d{10}$', message="Phone number must contain only digits.")
+        ],null=True
+    )
 
     def __str__(self):
         return self.username

@@ -13,39 +13,31 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h4 class="card-title">Order #{{ order.id }}</h4>
-                        <p><strong>Order Date:</strong> {{ order.created_at }}</p>
-                        <p><strong>Total Price:</strong> €{{ order.total_price }}</p>
+                        <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+                        <p><strong>Jewelry:</strong> {{ order.jewelry.name }}</p>
+                        <p><strong>Quantity:</strong> {{ order.quantity }}</p>
+                        <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
                         <p><strong>Status:</strong> {{ order.status }}</p>
 
-                        <h5>Items:</h5>
-                        <ul>
-                            {% for item in order.orderitem_set.all %}
-                                <li>
-                                    <strong>{{ item.jewelry.name }}</strong> - €{{ item.jewelry.price }} x {{ item.quantity }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-
-                        {% if order.status != "Cancelled" %}
-                            <form method="post" action="{% url 'cancel_order' order.id %}">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Cancel Order</button>
-                            </form>
-                        {% else %}
+                        {% if order.status == 'Pending' %}
+                        <form method="post" action="{% url 'cancel_order' order.id %}" onsubmit="return confirm('Are you sure you want to DELETE this order? This cannot be undone!');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Order</button>
+                        </form>
+                        {% elif order.status == 'Cancelled' %}
                             <p class="text-danger"><strong>Order Cancelled</strong></p>
                         {% endif %}
+
                     </div>
                 </div>
 
-                <!-- Order Image (Right) -->
+                <!-- Jewelry Image (Right) -->
                 <div class="col-md-4 text-center">
-                    {% for item in order.orderitem_set.all %}
-                        {% if item.jewelry.image %}
-                            <img src="{{ item.jewelry.image.url }}" class="img-fluid rounded mb-2" alt="{{ item.jewelry.name }}" style="max-width: 100%; height: auto;">
-                        {% else %}
-                            <p>No Image Available</p>
-                        {% endif %}
-                    {% endfor %}
+                    {% if order.jewelry.image %}
+                        <img src="{{ order.jewelry.image.url }}" class="img-fluid rounded" alt="{{ order.jewelry.name }}" style="max-width: 100%; height: auto;">
+                    {% else %}
+                        <p>No Image Available</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -55,7 +47,7 @@
     {% endif %}
 
     <div class="text-center mt-3">
-        <a href="{% url 'shop' %}" class="btn btn-primary">Browse Jewelry</a>
+        <a href="{% url 'jewelry_list' %}" class="btn btn-primary">Browse Jewelry</a>
     </div>
 </div>
 {% endblock %}
