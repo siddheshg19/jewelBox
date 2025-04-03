@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+9mzsv^njq%-g_gp$ff%rvap9-yfzyswy0^asl$(e@^way=8vr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['4fa2a7d2e0a9490f89c5d9bbbd165e20.vfs.cloud9.eu-west-1.amazonaws.com']
+ALLOWED_HOSTS = ['4fa2a7d2e0a9490f89c5d9bbbd165e20.vfs.cloud9.eu-west-1.amazonaws.com','jewelbox-env.eba-xp7my3vq.eu-west-1.elasticbeanstalk.com']
 
 
 # Application definition
