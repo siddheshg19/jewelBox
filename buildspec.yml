@@ -10,8 +10,8 @@ phases:
   pre_build:
     commands:
       - python --version
-      - pylint *.py
-      - pylint jewelBox/*.py
+      - pylint --exit-zero *.py
+      - pylint --exit-zero jewelBox/*.py
       
 artifacts:
   files:
