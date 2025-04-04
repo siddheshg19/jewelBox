@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
     )
 
     def __str__(self):
-        return self.first_name
+        return self.username
 
 class Jewelry(models.Model):
     name = models.CharField(max_length=255)
