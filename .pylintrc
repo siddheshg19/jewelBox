@@ -1,6 +1,6 @@
 [MESSAGES CONTROL]
-
-# Disable the invalid name check globally for this project
-disable=invalid-name,
-        # other-disabled-messages,
-        # another-one
+disable=invalid-name, # From before
+        no-member     # Add this to ignore E1101
+        
+[TYPECHECK]
+ignored-classes=objects, DoesNotExist, MultipleObjectsReturned

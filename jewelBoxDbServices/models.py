@@ -4,7 +4,6 @@ from django.core.validators import RegexValidator, MinLengthValidator
 
 class CustomUser(AbstractUser):
     is_owner = models.BooleanField(default=False)
-    #phone_number = models.CharField(max_length=15, blank=True, null=True)
     phone_number = models.CharField(
         max_length=10,
         validators=[
@@ -14,7 +13,7 @@ class CustomUser(AbstractUser):
     )
 
     def __str__(self):
-        return self.username
+        return self.name
 
 class Jewelry(models.Model):
     name = models.CharField(max_length=255)

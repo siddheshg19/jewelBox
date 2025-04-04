@@ -59,20 +59,6 @@ def logout(request):
     messages.success(request, "You have been logged out.")
     return redirect("home")
 
-def my_orders(request):
-    return render(request, 'my_orders.html')
-
-# @login_required
-# def jewelry_list(request):
-#     jewelry_items = Jewelry.objects.all()
-
-#     category = request.GET.get("category")  # Get category from request parameters
-#     if category:
-#         jewelry_items = jewelry_items.filter(category=category)  # Filter by category
-#     else:
-#         jewelry_items = jewelry_items.order_by("category")  # Default order
-
-#     return render(request, "jewelry_list.html", {"jewelry_items": jewelry_items})
 
 @login_required
 def jewelry_list(request):

@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model  # Import this instead of User
 from django.db import IntegrityError
-from jewelBoxDbServices.models import Jewelry, Order
 
 CustomUser = get_user_model()  # Get the custom user model dynamically
 
