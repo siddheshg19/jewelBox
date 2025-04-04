@@ -1,3 +1,21 @@
+"""
+URLs for the JewelBox application.
+
+This module defines the URL patterns for the different views in the
+JewelBox application, including user authentication, orders, and 
+jewelry-related actions.
+
+Available URL patterns:
+- Home
+- Login
+- Signup
+- Logout
+- My Orders
+- Jewelry List
+- Order Jewelry
+- Order Confirmation
+- Cancel Order
+"""
 from django.urls import path
 from .views import home,login,signup, logout,my_orders, jewelry_list,order_jewelry, order_confirmation, cancel_order
 
