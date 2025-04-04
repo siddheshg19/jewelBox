@@ -10,7 +10,7 @@ phases:
   pre_build:
     commands:
       - python --version
-      - pylint jewelBox/*.py
+      - pylint frontEnd jewelBoxDbServices jewelBox
       
 artifacts:
   files:
