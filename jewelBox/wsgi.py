@@ -4,13 +4,14 @@ WSGI config for jewelBox project.
 It exposes the WSGI callable as a module-level variable named ``application``.
 
 For more information on this file, see
-https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
+https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 """
 
 import os
 
 from django.core.wsgi import get_wsgi_application
 
+# Ensure 'jewelBox.settings' is the correct path to your settings file
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'jewelBox.settings')
 
 application = get_wsgi_application()
