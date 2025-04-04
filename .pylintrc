@@ -1,6 +1,96 @@
 [MESSAGES CONTROL]
-disable=invalid-name, # From before
-        no-member     # Add this to ignore E1101
-        
+
+# Disable specific messages by ID or symbolic name. Add messages you want
+# to ignore here, separated by commas.
+disable=
+    invalid-name,             # C0103: Ignore package/module naming conventions (like for 'jewelBox')
+    missing-module-docstring, # C0114: Ignore missing docstrings at the top of files
+    missing-class-docstring,  # C0115: Ignore missing docstrings for classes
+    missing-function-docstring, # C0116: Ignore missing docstrings for functions/methods
+    line-too-long,            # C0301: Ignore lines longer than the max length
+    trailing-whitespace,      # C0303: Ignore trailing whitespace at the end of lines
+    missing-final-newline,    # C0304: Ignore if the file doesn't end with a blank line
+    trailing-newlines,        # C0305: Ignore extra blank lines at the end of files
+    wrong-import-order,       # C0411: Ignore errors about import order
+    ungrouped-imports,        # C0412: Ignore errors about import grouping
+    too-few-public-methods,   # R0903: Ignore classes with few methods (like Meta)
+    no-else-return,           # R1705: Ignore if 'else' is used after a 'return' in the 'if'
+    duplicate-code,           # R0801: Ignore duplicate code sections (use carefully)
+    no-member                 # E1101: Ignore errors about members not found (common Django false positive)
+
+
+[REPORTS]
+
+# Python code to execute, usually for sys.path manipulation such reports=no
+# to suppress warning about missing standard library modules.
+# init-hook=
+
+# Set the output format. Available formats are text, parseable, colorized, json and msvs. You can also
+# give a reporter class, e.g. mypackage.mymodule.MyReporterClass.
+output-format=text
+
+# Tells whether to display a full report or only the messages
+reports=no
+
+# Activate the evaluation score.
+score=yes
+
+
 [TYPECHECK]
+
+# List of class names for which member attributes should not be checked (useful
+# for classes with attributes dynamically set). Add standard Django exception types too.
 ignored-classes=objects, DoesNotExist, MultipleObjectsReturned
+
+
+[BASIC]
+
+# Regular expression which should only match function or class names that do not require a docstring.
+no-docstring-rgx=^_
+
+# Regular expression which should only match arguments names that do not require a docstring.
+# argument-rgx=
+
+
+[FORMAT]
+
+# Maximum number of characters on a single line.
+# You can uncomment and increase this if you prefer a longer limit than disabling C0301 entirely.
+# max-line-length=120
+
+# Maximum number of lines in a module.
+# max-module-lines=1000
+
+# String used as indentation marker. Default is 4 spaces.
+# indent-string='    '
+
+
+[DESIGN]
+
+# Maximum number of arguments for function / method
+# max-args=5
+
+# Maximum number of attributes for a class (see R0902).
+# max-attributes=7
+
+# Maximum number of statements in function/method body
+# max-statements=50
+
+
+[MASTER]
+
+# Add files or directories matching the regex patterns to the blacklist. The
+# regex matches against base names, not paths. Blacklisted files and
+# directories are exceptions to path inference and walk. They are removed BEFORE
+# analysing paths recursively during discovery. Contributes to '--ignore'.
+# ignore=
+# Add files or directories matching the regex patterns to the blacklist. The
+# regex matches against paths relative to the working directory. Contributes to '--ignore-paths'.
+ignore-patterns=
+    migrations, # Ignore all files/directories named 'migrations'
+    # Add other patterns like venv, .git, etc. if needed
+
+
+# List of plugins (as comma separated values of python module names) to load,
+# usually to register additional checkers.
+# load-plugins=
