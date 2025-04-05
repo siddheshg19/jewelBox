@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['jewel1-env.eba-4ktqnxri.eu-west-2.elasticbeanstalk.com','4fa2a7d2e0a9490f89c5d9bbbd165e20.vfs.cloud9.eu-west-1.amazonaws.com','jewelbox-env.eba-xp7my3vq.eu-west-1.elasticbeanstalk.com']
 
