@@ -1,8 +1,8 @@
 version: 0.2
 env:
   secrets-manager:
-    DJANGO_SECRET_KEY: jewelBox_x23355824.DJANGO_SECRET_KEY
-    DB_PASS: jewelBox_x23355824.DB_PASS
+    DJANGO_SECRET_KEY:jewelBox_x23355824.DJANGO_SECRET_KEY
+    DB_PASS:jewelBox_x23355824.DB_PASS
 
 phases:
   install:
