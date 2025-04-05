@@ -9,7 +9,7 @@ env:
 phases:
   install:
     runtime:
-      python: 3.10
+      python: 3.8
       java: corretto17
     commands:
       - yum update -y
