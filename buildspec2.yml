@@ -10,24 +10,27 @@ env:
 phases:
   install:
     runtime-versions:
-      java: corretto17  # SonarScanner requires Java
+      java: corretto17
     commands:
-      - yum install -y jq unzip
-      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-      - chmod +x sonar-scanner-5.0.1.3006-linux/bin/*
-      - export PATH=$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin
+      - yum install -y jq curl
+      - echo "Installed Java $(java -version 2>&1 | head -1)"
 
   build:
     commands:
-      - sonar-scanner --version
-      - sonar-scanner
-        -Dsonar.projectKey=$Project
-        -Dsonar.host.url=$HOST
-        -Dsonar.login=$LOGIN
-        -Dsonar.qualitygate.wait=true
-        -Dsonar.scm.disabled=true  # Optional: Skip SCM analysis if not needed
+      - |
+        echo "=== Checking SonarQube Quality Gate ==="
+        response=$(curl -sS -u "$LOGIN:" "$HOST/api/qualitygates/project_status?projectKey=$Project")
+        status=$(echo "$response" | jq -r '.projectStatus.status')
 
-      # Verify Quality Gate status (optional)
-      - echo "Checking Quality Gate..."
-      - curl -s -u "$LOGIN:" "$HOST/api/qualitygates/project_status?projectKey=$Project" | jq -r '.projectStatus.status'
+        echo "Quality Gate Status: $status"
+        echo "$response" | jq '.projectStatus.conditions[] | "  - \(.metricKey): \(.status) (Actual: \(.actualValue), Threshold: \(.errorThreshold))"'
+
+        if [ "$status" = "ERROR" ]; then
+          echo "❌ Critical: Quality Gate failed - Deployment blocked"
+          exit 1
+        elif [ "$status" = "OK" ]; then
+          echo "✅ Success: Quality Gate passed"
+        else
+          echo "⚠️ Warning: Unknown status '$status'"
+          exit 1
+        fi
