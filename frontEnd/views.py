@@ -122,7 +122,7 @@ def cancel_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
 
     if order.status == 'Pending':
-        with transaction.atomic():  # Use a transaction to ensure atomicity 
+        with transaction.atomic():  # Use a transaction to ensure atomicity
             jewelry = order.jewelry
             jewelry.stock += order.quantity  # Add the quantity back to the jewelry's stock
             jewelry.save()  # Save the updated jewelry
