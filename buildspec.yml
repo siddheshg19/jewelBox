@@ -15,7 +15,6 @@ phases:
   pre_build:
     commands:
       - python --version
-      - pylint --exit-zero frontEnd jewelBoxDbServices jewelBox
       - echo "=== Setting up environment ==="
       - export DJANGO_SETTINGS_MODULE="jewelBox.settings.prod"
       - echo "DJANGO_SECRET_KEY=\"$DJANGO_SECRET_KEY\"" > .env
