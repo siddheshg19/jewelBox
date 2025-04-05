@@ -20,7 +20,6 @@ phases:
       - echo "DJANGO_SECRET_KEY=\"$DJANGO_SECRET_KEY\"" > .env
       - echo "DB_PASS=\"$DB_PASS\"" >> .env
       - echo "DJANGO_DEBUG=False" >> .env
-      - python manage.py collectstatic --noinput
       
 artifacts:
   files:
