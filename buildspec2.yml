@@ -43,6 +43,7 @@ phases:
         else
           echo"✅ Quality Gate passed"
         fi
+        
   test:
     commands:
       - source venv/bin/activate
