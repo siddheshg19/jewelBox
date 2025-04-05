@@ -10,13 +10,22 @@ env:
 phases:
   install:
     runtime-versions:
+      python: 3.12
       java: corretto17
     commands:
       - yum install -y jq curl
+      - python -m pip install --upgrade pip
+      - pip install pytest pytest-cov
       - echo "Installed Java $(java -version 2>&1 | head -1)"
+      - echo "Installed Python $(python --version)"
 
   build:
     commands:
+      - |
+        echo "=== Running Pytest (Logs Only) ==="
+        pytest tests/ --cov=./ --cov-report=xml -v || echo "⚠️ Pytest reported failures (continuing anyway)"
+        echo "----------------------------------"
+
       - |
         echo "=== Checking SonarQube Quality Gate ==="
         response=$(curl -sS -u "$LOGIN:" "$HOST/api/qualitygates/project_status?projectKey=$Project")
@@ -34,3 +43,7 @@ phases:
           echo "⚠️ Warning: Unknown status '$status'"
           exit 1
         fi
+
+artifacts:
+  files:
+    - coverage.xml  # Still generated but not required for SonarQube check
