@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,7 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-+9mzsv^njq%-g_gp$ff%rvap9-yfzyswy0^asl$(e@^way=8vr'
+#SECRET_KEY = 'django-insecure-+9mzsv^njq%-g_gp$ff%rvap9-yfzyswy0^asl$(e@^way=8vr'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -78,7 +82,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends.postgresql',  # MySQL database engine                                  
         'NAME': 'postgres',          # Database name you created in RDS
         'USER': 'postgres',      # Master username for RDS
-        'PASSWORD': 'postgres',  # Master password for RDS
+        'PASSWORD': os.environ.get('DB_PASS'),  # Master password for RDS
         'HOST': 'jewel-box.czpvo9u3csqc.us-east-1.rds.amazonaws.com',           # RDS endpoint (e.g., tradehub-db.xxxxxx.us-east-1.rds.amazonaws.com)
         'PORT': '5432',                        # Default MySQL port
         'OPTIONS': {

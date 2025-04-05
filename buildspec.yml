@@ -1,4 +1,9 @@
 version: 0.2
+env:
+  secrets-manager:
+    DJANGO_SECRET_KEY: jewelBox_x23355824.DJANGO_SECRET_KEY
+    DB_PASS: jewelBox_x23355824.DB_PASS
+
 phases:
   install:
     runtime-versions:
@@ -6,11 +11,15 @@ phases:
     commands:
       - pip install --upgrade pip
       # Install dependencies needed for running the static analysis
-      - pip install -r requirements.txt pylint
+      - pip install -r requirements.txt
   pre_build:
     commands:
       - python --version
       - pylint --exit-zero frontEnd jewelBoxDbServices jewelBox
+      - echo "=== Setting up environment ==="
+      - export DJANGO_SETTINGS_MODULE="jewelBox.settings.prod"
+      - echo "DJANGO_SECRET_KEY=\"$DJANGO_SECRET_KEY\"" > .env
+      - echo "DB_PASSWORD=\"$DB_PASSWORD\"" >> .env
       
 artifacts:
   files:

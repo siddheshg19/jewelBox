@@ -1,49 +1,48 @@
-version: 0.2
-
+version:0.2
 env:
   secrets-manager:
-    LOGIN: jewelBox_x23355824:LOGIN
-    HOST: jewelBox_x23355824:HOST
-    Organization: jewelBox_x23355824:Organization
-    Project: jewelBox_x23355824:Project
-
+    LOGIN:jewelBox_x23355824:LOGIN
+    HOST:jewelBox_x23355824:HOST
+    Organization:jewelBox_x23355824:Organization
+    Project:jewelBox_x23355824:Project
 phases:
   install:
-    runtime-versions:
-      python: 3.12
-      java: corretto17
+    runtime:
+      python:3.12
+      java:corretto17
     commands:
-      - yum install -y jq curl
-      - python -m pip install --upgrade pip
-      - pip install pytest pytest-cov
-      - echo "Installed Java $(java -version 2>&1 | head -1)"
-      - echo "Installed Python $(python --version)"
+      -yum update -y
+      -yum install -y jq unzip
+      -python -m venv venv
+      -source venv/bin/activate
+      -pip install --upgrade pip
+      -pip install -r requirements.txt
+      -wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      -unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+      -chmod +x sonar-scanner-5.0.1.3006-linux/bin/*
+      -export PATH=$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin
 
+  pre_build:
+    commands:
+      -python --version
+      -java -version
+      -sonar-scanner --version
+      -pylint --exit-zero frontEnd jewelBoxDbServices jewelBox
+      -pytest
   build:
     commands:
-      - |
-        echo "=== Running Pytest (Logs Only) ==="
-        pytest tests/ --cov=./ --cov-report=xml -v || echo "⚠️ Pytest reported failures (continuing anyway)"
-        echo "----------------------------------"
-
-      - |
-        echo "=== Checking SonarQube Quality Gate ==="
-        response=$(curl -sS -u "$LOGIN:" "$HOST/api/qualitygates/project_status?projectKey=$Project")
-        status=$(echo "$response" | jq -r '.projectStatus.status')
-
-        echo "Quality Gate Status: $status"
-        echo "$response" | jq '.projectStatus.conditions[] | "  - \(.metricKey): \(.status) (Actual: \(.actualValue), Threshold: \(.errorThreshold))"'
-
-        if [ "$status" = "ERROR" ]; then
-          echo "❌ Critical: Quality Gate failed - Deployment blocked"
+      -echo "Waiting for SonarCloud automatic analysis to complete..."
+      -sleep 10
+      -echo "Checking Quality Gate status..."
+      -curl -u "$LOGIN:" "$HOST/api/qualitygates/project_status?projectKey=$Project">result.json
+      -cat result.json
+      -|
+        if ["$(jq -r '.projectStatus.status' result.json)"="ERROR"];then
+          echo"❌ Quality Gate failed"
           exit 1
-        elif [ "$status" = "OK" ]; then
-          echo "✅ Success: Quality Gate passed"
         else
-          echo "⚠️ Warning: Unknown status '$status'"
-          exit 1
+          echo"✅ Quality Gate passed"
         fi
-
 artifacts:
   files:
-    - coverage.xml  # Still generated but not required for SonarQube check
+    -'*/'
