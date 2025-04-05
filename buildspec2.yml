@@ -1,0 +1,33 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    LOGIN: jewelBox_x23355824:LOGIN
+    HOST: jewelBox_x23355824:HOST
+    Organization: jewelBox_x23355824:Organization
+    Project: jewelBox_x23355824:Project
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto17  # SonarScanner requires Java
+    commands:
+      - yum install -y jq unzip
+      - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
+      - chmod +x sonar-scanner-5.0.1.3006-linux/bin/*
+      - export PATH=$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin
+
+  build:
+    commands:
+      - sonar-scanner --version
+      - sonar-scanner
+        -Dsonar.projectKey=$Project
+        -Dsonar.host.url=$HOST
+        -Dsonar.login=$LOGIN
+        -Dsonar.qualitygate.wait=true
+        -Dsonar.scm.disabled=true  # Optional: Skip SCM analysis if not needed
+
+      # Verify Quality Gate status (optional)
+      - echo "Checking Quality Gate..."
+      - curl -s -u "$LOGIN:" "$HOST/api/qualitygates/project_status?projectKey=$Project" | jq -r '.projectStatus.status'
