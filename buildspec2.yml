@@ -8,7 +8,7 @@ env:
 phases:
   install:
     runtime:
-      python:3.12
+      python:3.9
       java:corretto17
     commands:
       -yum update -y
@@ -28,7 +28,7 @@ phases:
       -java -version
       -sonar-scanner --version
       -pylint --exit-zero frontEnd jewelBoxDbServices jewelBox
-      -pytest
+      
   build:
     commands:
       -echo "Waiting for SonarCloud automatic analysis to complete..."
@@ -43,6 +43,11 @@ phases:
         else
           echo"✅ Quality Gate passed"
         fi
+  test:
+    commands:
+      - source venv/bin/activate
+      - pytest --maxfail=3 --disable-warnings -q
+        
 artifacts:
   files:
     -'*/'
