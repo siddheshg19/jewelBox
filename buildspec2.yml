@@ -9,7 +9,7 @@ env:
 phases:
   install:
     runtime:
-      python: 3.9
+      python: 3.10
       java: corretto17
     commands:
       - yum update -y
@@ -23,6 +23,7 @@ phases:
       - chmod +x sonar-scanner-5.0.1.3006-linux/bin/*
       - export PATH=$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin
       - pip install pylint pytest
+      - pytest --maxfail=3 --disable-warnings -q
 
   pre_build:
     commands:
@@ -45,11 +46,6 @@ phases:
         else
           echo "✅ Quality Gate passed"
         fi
-
-  post_build:
-    commands:
-      - source venv/bin/activate
-      - pytest --maxfail=3 --disable-warnings -q
 
 artifacts:
   files:
