@@ -1,41 +1,32 @@
 version: 0.2
-
 env:
   secrets-manager:
     LOGIN: jewelBox_x23355824:LOGIN
     HOST: jewelBox_x23355824:HOST
     Organization: jewelBox_x23355824:Organization
     Project: jewelBox_x23355824:Project
-    DJANGO_SECRET_KEY: jewelBox_x23355824:DJANGO_SECRET_KEY  
+    DJANGO_SECRET_KEY: jewelBox_x23355824:DJANGO_SECRET_KEY
 
 phases:
   install:
     runtime-versions:
       python: 3.9
-      java: corretto17
     commands:
-      - yum update -y
-      - yum install -y jq unzip
-      - python -m venv venv
-      - source venv/bin/activate
       - pip install --upgrade pip
-      - pip install python-dotenv  # Add this package
-      - pip install -r requirements.txt
+      # Install dependencies needed for running the static analysis
+      - pip install -r requirements.txt pylint
+      - pip install python-dotenv
       - wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-      - unzip sonar-scanner-cli-5.0.1.3006-linux.zip
-      - chmod +x sonar-scanner-5.0.1.3006-linux/bin/*
-      - export PATH=$PATH:$PWD/sonar-scanner-5.0.1.3006-linux/bin
-
+      - unzip sonar-scanner-*.zip
+      - rm sonar-scanner-*.zip
+      - mv sonar-scanner-* sonar-scanner
+      - export PATH=$PATH:$PWD/sonar-scanner/bin
   pre_build:
     commands:
-      - python --version
-      - java -version
-      - sonar-scanner --version
-      # Create .env file with secret key
       - echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" > .env
       - echo "DEBUG=False" >> .env
+      - python --version
       - pylint --exit-zero frontEnd jewelBoxDbServices jewelBox
-
   build:
     commands:
       - echo "Waiting for SonarCloud automatic analysis to complete..."
@@ -50,7 +41,6 @@ phases:
         else
           echo "✅ Quality Gate passed"
         fi
-
 artifacts:
   files:
-    - '*/'
+    - '**/*'
