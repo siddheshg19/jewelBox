@@ -4,13 +4,13 @@ env:
 
   secrets-manager:
 
-    LOGIN: jewelbox_x23355824:LOGIN
+    LOGIN: jewelBox_x23355824:LOGIN
 
-    HOST: jewelbox_x23355824:HOST
+    HOST: jewelBox_x23355824:HOST
 
-    Organization: jewelbox_x23355824:Organization
+    Organization: jewelBox_x23355824:Organization
 
-    Project: jewelbox_x23355824:Project
+    Project: jewelBox_x23355824:Project
  
 phases:
 
