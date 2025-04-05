@@ -53,6 +53,8 @@ phases:
       - java -version
 
       - sonar-scanner --version
+      
+      - pylint --exit-zero frontEnd jewelBoxDbServices jewelBox
  
   build:
 
