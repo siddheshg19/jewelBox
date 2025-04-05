@@ -19,7 +19,7 @@ phases:
       - echo "=== Setting up environment ==="
       - export DJANGO_SETTINGS_MODULE="jewelBox.settings.prod"
       - echo "DJANGO_SECRET_KEY=\"$DJANGO_SECRET_KEY\"" > .env
-      - echo "DB_PASSWORD=\"$DB_PASSWORD\"" >> .env
+      - echo "DB_PASS=\"$DB_PASS\"" >> .env
       
 artifacts:
   files:
