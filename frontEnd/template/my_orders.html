@@ -34,7 +34,7 @@
                 <!-- Jewelry Image (Right) -->
                 <div class="col-md-4 text-center">
                     {% if order.jewelry.image %}
-                        <img src="{{ order.jewelry.image.url }}" class="img-fluid rounded" alt="{{ order.jewelry.name }}" style="max-width: 100%; height: auto;">
+                        <img src="https://jewel-box1.s3.us-east-1.amazonaws.com{{ order.jewelry.image.url }}" class="img-fluid rounded" alt="{{ order.jewelry.name }}" style="max-width: 100%; height: auto;">
                     {% else %}
                         <p>No Image Available</p>
                     {% endif %}
