@@ -38,7 +38,7 @@ phases:
           echo "✅ Quality Gate passed"
         fi
 
-  test:
+  post_build:
     commands:
       - source venv/bin/activate
       - pytest --maxfail=3 --disable-warnings -q
