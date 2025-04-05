@@ -1,4 +1,11 @@
 version: 0.2
+env:
+  secrets-manager:
+    LOGIN: jewelBox_x23355824:LOGIN
+    HOST: jewelBox_x23355824:HOST
+    Organization: jewelBox_x23355824:Organization
+    Project: jewelBox_x23355824:Project
+    
 phases:
   install:
     runtime:
