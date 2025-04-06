@@ -1,6 +1,8 @@
 [MESSAGES CONTROL]
  
  # Disable the invalid name check globally for this project
- disable=invalid-name,
+disable=
+    invalid-name,
+    line-too-long,
          # other-disabled-messages,
          # another-one
