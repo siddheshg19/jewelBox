@@ -1,3 +1,5 @@
+"""This forms handles Register/SignUp functionality of JewelBox..."""
+
 from django import forms
 from django.contrib.auth import get_user_model  # Import this instead of User
 from django.db import IntegrityError
