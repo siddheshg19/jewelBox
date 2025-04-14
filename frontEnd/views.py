@@ -22,12 +22,9 @@ def login(request):
         user = authenticate(request, username=email, password=password)
 
         if user:
-            auth_login(request, user)  # This sets request.user
-            request.session["user_id"] = user.id  # <-- Not needed anymore
+            auth_login(request, user)  
+            request.session["user_id"] = user.id  
             request.session["user_name"] = user.first_name
-
-            if user.is_owner:  # Check if the user is an admin
-                return redirect("admin_dashboard")  # Redirect to admin panel
             
             messages.success(request, "Login successful!")
             return redirect("jewelry_list")
@@ -110,9 +107,9 @@ def order_confirmation(request, order_id):
 def my_orders(request):
     """Displays the logged-in user's order history."""
 
-    user = request.user  # Get the logged-in user directly using request.user
+    user = request.user  
 
-    orders = Order.objects.filter(user=user).order_by('-order_date') #Filter orders by user, ordered by date descending
+    orders = Order.objects.filter(user=user).order_by('-order_date') 
 
     return render(request, 'my_orders.html', {'orders': orders})
 
@@ -122,12 +119,12 @@ def cancel_order(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
 
     if order.status == 'Pending':
-        with transaction.atomic():  # Use a transaction to ensure atomicity
+        with transaction.atomic():  
             jewelry = order.jewelry
-            jewelry.stock += order.quantity  # Add the quantity back to the jewelry's stock
-            jewelry.save()  # Save the updated jewelry
+            jewelry.stock += order.quantity  
+            jewelry.save() 
 
-            order.delete()  # Delete the order
+            order.delete()  
         messages.success(request, f"Order #{order.id} has been deleted, and stock has been updated.")
 
     else:
